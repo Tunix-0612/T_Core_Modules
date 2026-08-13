@@ -1,0 +1,9 @@
+.pio/
+.vscode/
+firmware/.pio/
+firmware/.vscode/
+*.code-workspace
+
+
+Reports/
+Road Maps/
