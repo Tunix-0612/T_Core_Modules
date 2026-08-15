@@ -3,6 +3,7 @@
 firmware/.pio/
 firmware/.vscode/
 *.code-workspace
+.directory
 
 
 Reports/

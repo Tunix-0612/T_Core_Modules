@@ -1,0 +1,54 @@
+#include "TMemoryManager.h"
+
+// 1. Example Struct
+struct RGBColor
+{
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
+};
+
+// 2. Create the memory object with maximum EEPROM capasity.
+TMemoryManager memory(1024);
+
+void setup()
+{
+  Serial.begin(115200);
+
+  // 3. Initialize/Load Partition Table
+  memory.begin();
+
+  // 4. Firmware Update Controls
+  // If firmware version requires more bytes for a Partition
+  // Resize inside the firmwareValidate();
+  ErrorCode err = memory.firmwareValidate();
+  if (err != ErrorCode::NONE)
+  {
+    Serial.print(F("Firmware ERR: "));
+    Serial.println(static_cast<int>(err));
+  }
+
+  // 5. Settings Read / Write (Single Struct - default itemIndex = 0)
+  // Update EEPROM with writeData
+  memory.settings.brightness = 85;
+  memory.settings.timeout = 30;
+  memory.writeData(TMemoryManager::PartitionID::SETTINGS, memory.settings);
+
+  // 6. Array Access Example (USER_DATA_1: 15x RGB Array)
+  // (Note: This partition must be declared in the firmwareValidate before with resizePartition)
+  RGBColor activeLed = {255, 128, 0};
+
+  // Write on USER_DATA_1 partition's 4th index
+  memory.writeData(TMemoryManager::PartitionID::USER_DATA_1, activeLed, 4);
+
+  // Read USER_DATA_1 partition's 4th index
+  RGBColor readLed = {0, 0, 0};
+  memory.readData(TMemoryManager::PartitionID::USER_DATA_1, readLed, 4);
+
+  Serial.print(F("Read LED Color: R="));
+  Serial.print(readLed.r);
+  Serial.print(F(" G="));
+  Serial.print(readLed.g);
+  Serial.print(F(" B="));
+  Serial.println(readLed.b);
+}

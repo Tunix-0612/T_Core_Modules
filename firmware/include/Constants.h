@@ -9,6 +9,7 @@ namespace pins
   
 }
 
+// --- DEVICE RELATED DATA ---
 namespace characteristics 
 {
   
@@ -41,14 +42,22 @@ namespace system_version
 }
 
 // --- ERROR CODES ---
-enum class ErrorCode : byte 
+enum class ErrorCode : uint16_t 
 {
-  NONE                   =  0,
-  FIRMWARE_VERSION_ERROR = 11,
-  VERSION_NOT_SUPPORTED  = 12,
-  DOWNGRADED_FIRMWARE    = 13,
-  PROGRAM_LOOP_FAILURE   = 14,
-  RAM_FAILURE            = 15,
+  NONE                    =  0,
+  FIRMWARE_VERSION_ERROR  = 101,
+  VERSION_NOT_SUPPORTED   = 102,
+  DOWNGRADED_FIRMWARE     = 103,
+
+  PROGRAM_LOOP_FAILURE    = 111,
+
+  RAM_FAILURE             = 121,
+  RAM_LOW                 = 122,
+
+  EEPROM_FULL             = 131,
+  ACCESS_VIOLATION        = 132,
+  BUFFER_OVERFLOW         = 133,
+  INTEGRITY_ERROR         = 134
 
   // --- Additional Error Codes
 };
